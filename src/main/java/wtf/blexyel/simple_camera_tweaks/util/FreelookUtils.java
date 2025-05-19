@@ -12,7 +12,7 @@ public class FreelookUtils {
     private static boolean freeLooking = false;
     private static Perspective freeLookLastPerspective;
 
-    private static final KeyBinding freelookKey = new KeyBinding("key.foxclient.freelook", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_5, "category.foxclient.main");
+    private static final KeyBinding freelookKey = new KeyBinding("key.simple_camera_tweaks.freelook", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_5, "category.simple_camera_tweaks.main");
 
     public static void init() {
         KeyBindingHelper.registerKeyBinding(freelookKey);
