@@ -7,7 +7,7 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 
 public class Zoom {
-    private static final KeyBinding zoomKey = new KeyBinding("key.foxclient.zoom", GLFW.GLFW_KEY_C, "category.foxclient.main");
+    private static final KeyBinding zoomKey = new KeyBinding("key.simple_camera_tweaks.zoom", GLFW.GLFW_KEY_C, "category.simple_camera_tweaks.main");
     public static boolean isZoomin = false;
 
     public static float zoomedFovDefault = 0.2F;
