@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "simple_camera_tweaks",
+  "version": "${version}",
+  "name": "simple camera tweaks",
+  "description": "simple camera tweaks ig.\nNOTE: This code was taken from FoxStudios/FoxClient, because i want my zoom and freelook and Foxclient is a \"tiny\" bit unmaintained",
+  "authors": [
+    "Blexyel",
+    "FoxStudios (original code)"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/simple_camera_tweaks/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "wtf.blexyel.simple_camera_tweaks.client.MainClient"
+    ],
+    "main": [
+      "wtf.blexyel.simple_camera_tweaks.Main"
+    ]
+  },
+  "mixins": [
+    "simple_camera_tweaks.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "1.21.x"
+  },
+  "recommends": {
+    "modmenu": "*"
+  }
+}
