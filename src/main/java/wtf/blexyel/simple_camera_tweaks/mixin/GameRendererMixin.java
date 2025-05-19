@@ -11,7 +11,7 @@ import wtf.blexyel.simple_camera_tweaks.util.Zoom;
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
     @Inject(method = "getFov", at = @At("TAIL"), cancellable = true)
-    private void onGetFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
+    private void onGetFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Float> cir) {
         double baseFov = cir.getReturnValue();
 
         // Handle key state and smooth camera toggle
@@ -19,9 +19,9 @@ public class GameRendererMixin {
 
         // Set the desired target zoom level based on key state
         if (Zoom.zoomin()) {
-            Zoom.currentZoomLevel = baseFov * Zoom.zoomedFov;
+            Zoom.currentZoomLevel = (float) (baseFov * Zoom.zoomedFov);
         } else {
-            Zoom.currentZoomLevel = baseFov;
+            Zoom.currentZoomLevel = (float) baseFov;
         }
 
         // Smoothly interpolate toward target

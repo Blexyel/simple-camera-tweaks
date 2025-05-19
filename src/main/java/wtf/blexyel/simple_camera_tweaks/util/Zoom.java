@@ -14,8 +14,8 @@ public class Zoom {
     public static float zoomedFov = 0.2F;       // Zoomed-in FOV scale
     public static float defaultFov = 1.0F;      // Normal FOV scale
 
-    public static double currentZoomLevel = 1.0F;   // The target zoom level
-    public static double actualZoomLevel = 1.0F;    // The lerped FOV value
+    public static float currentZoomLevel = 1.0F;   // The target zoom level
+    public static float actualZoomLevel = 1.0F;    // The lerped FOV value
 
     public static void initZoom() {
         KeyBindingHelper.registerKeyBinding(zoomKey);

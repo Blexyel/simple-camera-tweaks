@@ -21,7 +21,8 @@ public abstract class CameraMixin {
     @Unique
     private boolean startFreelook = true;
 
-    @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setRotation(FF)V", ordinal = 0, shift = At.Shift.AFTER))
+    @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/Camera;setRotation(FF)V", shift = At.Shift.AFTER))
+    //@Inject(method = "update", at = @At("TAIL"))
     public void update(net.minecraft.world.BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
         if (!(focusedEntity instanceof PlayerEntity)) return;
 
