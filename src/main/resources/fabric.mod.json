@@ -3,7 +3,7 @@
   "id": "simple_camera_tweaks",
   "version": "${version}",
   "name": "simple camera tweaks",
-  "description": "simple camera tweaks ig.\nNOTE: This code was taken from FoxStudios/FoxClient, because i want my zoom and freelook and Foxclient is a \"tiny\" bit unmaintained",
+  "description": "simple camera tweaks ig.\n\nAdds freelook and zoom.",
   "authors": [
     "Blexyel",
     "FoxStudios (original code)"
