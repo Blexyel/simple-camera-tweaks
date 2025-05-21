@@ -23,9 +23,9 @@ public class GameRendererMixin {
             .getFriendlyString()
             .compareTo("1.21.2") >= 0;
 
-    // I don't care about unchecked shit
-    @SuppressWarnings("unchecked")
-    @Inject(method = "getFov", at = @At("TAIL"))
+    // I don't care about unchecked shit, do not remove cancellable
+    @SuppressWarnings({"unchecked"})
+    @Inject(method = "getFov", at = @At("TAIL"), cancellable = true)
     private void onGetFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<?> cir) {
         if (IS_NEW_VERSION) {
             //noinspection unchecked
