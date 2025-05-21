@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import wtf.blexyel.simple_camera_tweaks.util.Zoom;
 
+// I fucking hate this, holy shit
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
     @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -22,6 +23,8 @@ public class GameRendererMixin {
             .getFriendlyString()
             .compareTo("1.21.2") >= 0;
 
+    // I don't care about unchecked shit
+    @SuppressWarnings("unchecked")
     @Inject(method = "getFov", at = @At("TAIL"))
     private void onGetFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<?> cir) {
         if (IS_NEW_VERSION) {
