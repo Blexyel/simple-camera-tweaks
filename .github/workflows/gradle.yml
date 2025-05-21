@@ -29,8 +29,12 @@ jobs:
       with:
         gradle-version: '8.14'
     
+    # - name: Build with Gradle 8.14
+    #   run: gradle build
+
     - name: Build with Gradle 8.14
-      run: gradle build
+      run: ./build_all.sh
+      shell: bash
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.6.2
