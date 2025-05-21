@@ -35,6 +35,7 @@ def getProp = { key, defaultValue ->
 
 // Define version-specific properties with fallbacks
 ext {
+    minVersion = getProp('min_minecraft_version', project.min_minecraft_version)
     yarnMappings = getProp('yarn_mappings', project.yarn_mappings)
     fabricVersion = getProp('fabric_version', project.fabric_version)
     loaderVersion = getProp('loader_version', project.loader_version)
@@ -57,7 +58,16 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
                 "minecraft_version": targetVersion,
+                "min_minecraft_version": minVersion,
                 "loader_version": loaderVersion
+    }
+
+    if (!project.hasProperty("mcversion")) {
+        filter { line ->
+            if (line.contains('"minecraft": ">=') && line.contains('<='))
+                return line.replaceAll(/"minecraft":\s*">=.+<=.+"/, '"minecraft": "*"')
+            return line
+        }
     }
 }
 
