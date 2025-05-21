@@ -28,6 +28,7 @@ jobs:
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
       with:
         gradle-version: '8.14'
+        cache-disabled: true
     
     # - name: Build with Gradle 8.14
     #   run: gradle build
