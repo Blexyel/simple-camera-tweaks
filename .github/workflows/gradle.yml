@@ -33,7 +33,7 @@ jobs:
     #   run: gradle build
 
     - name: Build with Gradle 8.14
-      run: ./build_all.sh
+      run: chmod +x build_all.sh && ./build_all.sh
       shell: bash
 
     - name: Upload a Build Artifact
