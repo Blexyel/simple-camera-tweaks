@@ -22,7 +22,9 @@ public abstract class HandMixin {
     private void renderArmWithItem(AbstractClientPlayerEntity abstractClientPlayer, float f, float g, Hand interactionHand, float swingProgress, ItemStack itemStack, float equippedProgress, MatrixStack poseStack, VertexConsumerProvider multiBufferSource, int combinedLight, CallbackInfo ci) {
         boolean mainHand = interactionHand == Hand.MAIN_HAND;
         Arm offArm = mainHand ? abstractClientPlayer.getMainArm() : abstractClientPlayer.getMainArm().getOpposite();
-        if (itemStack.isEmpty() && (Config.enabled) && (!mainHand && !abstractClientPlayer.isInvisible())) {
+        String heldItem = abstractClientPlayer.getMainHandStack().toString();
+        //System.out.println("Held Item: " + heldItem.contains("pointblank:"));
+        if (itemStack.isEmpty() &&  !heldItem.contains("pointblank:") && (Config.enabled) && (!mainHand && !abstractClientPlayer.isInvisible())) {
             this.renderArmHoldingItem(poseStack, multiBufferSource, combinedLight, equippedProgress, swingProgress, offArm);
         }
     }
