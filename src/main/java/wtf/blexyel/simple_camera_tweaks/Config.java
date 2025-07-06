@@ -1,7 +1,6 @@
 package wtf.blexyel.simple_camera_tweaks;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 
 import java.io.File;
 import java.io.FileReader;
@@ -9,12 +8,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Config {
-    public static boolean enabled = false; // default
+    public static boolean smooth = true;
+    public static boolean offhand = false;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final File CONFIG_FILE = new File("config/simple_camera_tweaks.json");
 
-    // Call this at mod startup/load
     public static void load() {
         if (!CONFIG_FILE.exists()) {
             save(); // create default config file if missing
@@ -22,33 +21,38 @@ public class Config {
         }
 
         try (FileReader reader = new FileReader(CONFIG_FILE)) {
-            ConfigData data = GSON.fromJson(reader, ConfigData.class);
-            if (data != null) {
-                enabled = data.enabled;
+            JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+
+            // Migrate "enabled" -> "offhand" if present
+            if (json.has("enabled") && !json.has("offhand")) {
+                offhand = json.get("enabled").getAsBoolean();
+                Main.LOGGER.info("Migrated 'enabled' to 'offhand'");
+            } else if (json.has("offhand")) {
+                offhand = json.get("offhand").getAsBoolean();
             }
-        } catch (IOException e) {
+
+            if (json.has("smooth")) {
+                smooth = json.get("smooth").getAsBoolean();
+            }
+
+        } catch (IOException | JsonParseException e) {
             e.printStackTrace();
         }
     }
 
-    // Call this whenever you want to save current config
     public static void save() {
         try {
-            // Ensure config folder exists
             CONFIG_FILE.getParentFile().mkdirs();
 
+            JsonObject json = new JsonObject();
+            json.addProperty("smooth", smooth);
+            json.addProperty("offhand", offhand);
+
             try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
-                ConfigData data = new ConfigData();
-                data.enabled = enabled;
-                GSON.toJson(data, writer);
+                GSON.toJson(json, writer);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    // Helper data class for Gson serialization
-    private static class ConfigData {
-        boolean enabled;
     }
 }

@@ -11,18 +11,18 @@ import wtf.blexyel.simple_camera_tweaks.util.Zoom;
 public class MouseMixin {
     @Inject(method = "onMouseScroll", at = @At("HEAD"), cancellable = true)
     private void onMouseScroll(long window, double horizontal, double vertical, CallbackInfo ci) {
-        if (Zoom.zoomin()) {
+        if (Zoom.isZooming()) {
             ci.cancel(); // Prevent default scroll behavior while zooming
 
             // Adjust zoomed FOV modifier within safe bounds
             if (vertical > 0) {
-                Zoom.zoomedFov = Math.max(0.05F, Zoom.zoomedFov - 0.05F);
+                Zoom.zoomedFovScale = Math.max(0.05F, Zoom.zoomedFovScale - 0.05F);
             } else {
-                Zoom.zoomedFov = Math.min(1.0F, Zoom.zoomedFov + 0.05F);
+                Zoom.zoomedFovScale = Math.min(1.0F, Zoom.zoomedFovScale + 0.05F);
             }
 
             // Update target zoom level to reflect scroll
-            Zoom.currentZoomLevel = Zoom.actualZoomLevel * Zoom.zoomedFov;
+            Zoom.targetZoomLevel = Zoom.actualZoomLevel * Zoom.zoomedFovScale;
         }
     }
 }

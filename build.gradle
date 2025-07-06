@@ -6,6 +6,17 @@ plugins {
 version = "${project.mod_version}_${project.hasProperty('mcversion') ? project.mcversion : (project.minecraft_version ?: '')}"
 group = project.maven_group
 
+repositories {
+    maven {
+        name 'Xander Maven'
+        url 'https://maven.isxander.dev/releases'
+    }
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
+}
+
 // Define the target Minecraft version from the mcversion property, default to gradle.properties minecraft_version
 ext {
     targetVersion = project.hasProperty('mcversion') ? project.mcversion : project.minecraft_version
@@ -39,6 +50,8 @@ ext {
     yarnMappings = getProp('yarn_mappings', project.yarn_mappings)
     fabricVersion = getProp('fabric_version', project.fabric_version)
     loaderVersion = getProp('loader_version', project.loader_version)
+    yacl_version = getProp('yacl_version', project.yacl_version)
+    modmenu_version = getProp('modmenu_version', project.modmenu_version)
 }
 
 // Update dependencies to use dynamic properties
@@ -47,6 +60,8 @@ dependencies {
     mappings "net.fabricmc:yarn:${yarnMappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${loaderVersion}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabricVersion}"
+    modImplementation "dev.isxander:yet-another-config-lib:${yacl_version}"
+    modImplementation("com.terraformersmc:modmenu:${modmenu_version}")
 }
 
 processResources {

@@ -8,12 +8,7 @@
     "EntityMixin",
     "GameRendererMixin",
     "HandMixin",
-    "MouseMixin",
-    "OptionsScreenMixin"
-  ],
-  "client": [
-    "ScreenAccessor",
-    "ScreenMixin"
+    "MouseMixin"
   ],
   "injectors": {
     "defaultRequire": 1

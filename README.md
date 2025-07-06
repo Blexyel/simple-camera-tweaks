@@ -6,4 +6,9 @@
 </a>
 
 
-compile against different versions using `gradle build "-Pmcversion=1.21.1"`
+Compile against different versions using `gradle build "-Pmcversion=1.21.1"`
+
+
+### Known Issues:
+- Smooth zoom does not zoom out smoothly.
+- Hand position slightly changes, when toggling smooth zoom on and off.

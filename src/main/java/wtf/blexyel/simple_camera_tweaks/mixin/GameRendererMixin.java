@@ -40,12 +40,12 @@ public class GameRendererMixin {
     private void handleNewVersion(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Float> cir) {
         float baseFov = cir.getReturnValue();
 
-        Zoom.smoothCam();
+        Zoom.updateZoomState();
 
-        if (Zoom.zoomin()) {
-            Zoom.currentZoomLevel = (float) (baseFov * Zoom.zoomedFov);
+        if (Zoom.isZooming()) {
+            Zoom.targetZoomLevel = (float) (baseFov * Zoom.zoomedFovScale);
         } else {
-            Zoom.currentZoomLevel = baseFov;
+            Zoom.targetZoomLevel = baseFov;
         }
 
         Zoom.calculateZoom();
@@ -56,12 +56,12 @@ public class GameRendererMixin {
     private void handleOldVersion(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
         double baseFov = cir.getReturnValue();
 
-        Zoom.smoothCam();
+        Zoom.updateZoomState();
 
-        if (Zoom.zoomin()) {
-            Zoom.currentZoomLevel = (float) (baseFov * Zoom.zoomedFov);
+        if (Zoom.isZooming()) {
+            Zoom.targetZoomLevel = (float) (baseFov * Zoom.zoomedFovScale);
         } else {
-            Zoom.currentZoomLevel = (float) baseFov;
+            Zoom.targetZoomLevel = (float) baseFov;
         }
 
         Zoom.calculateZoom();

@@ -3,7 +3,7 @@
   "id": "simple_camera_tweaks",
   "version": "${version}",
   "name": "simple camera tweaks",
-  "description": "simple camera tweaks ig.\n\nAdds freelook and zoom.",
+  "description": "simple camera tweaks ig.\n\nAdds freelook and zoom.\n\nKnown Issues: \n- Smooth zoom does not zoom out smoothly.\n- Hand position slightly changes, when toggling smooth zoom on and off.",
   "authors": [
     "Blexyel",
     "FoxStudios (original code)"
@@ -18,12 +18,16 @@
     ],
     "main": [
       "wtf.blexyel.simple_camera_tweaks.Main"
+    ],
+    "modmenu": [
+      "wtf.blexyel.simple_camera_tweaks.config.ModMenu"
     ]
   },
   "mixins": [
     "simple_camera_tweaks.mixins.json"
   ],
   "depends": {
+    "yet_another_config_lib_v3": "*",
     "fabricloader": ">=${loader_version}",
     "fabric-api": "*",
     "minecraft": ">=${min_minecraft_version} <=${minecraft_version}"

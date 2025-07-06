@@ -1,25 +1,14 @@
 package wtf.blexyel.simple_camera_tweaks.util;
 
-
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
-import net.minecraft.client.util.InputUtil;
-import org.lwjgl.glfw.GLFW;
 
 public class FreelookUtils {
     private static boolean freeLooking = false;
     private static Perspective freeLookLastPerspective;
 
-    private static final KeyBinding freelookKey = new KeyBinding("key.simple_camera_tweaks.freelook", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_5, "category.simple_camera_tweaks.main");
-
-    public static void init() {
-        KeyBindingHelper.registerKeyBinding(freelookKey);
-    }
-
     public static boolean active() {
-        return freelookKey.isPressed();
+        return Keybindings.freelookKey.isPressed();
     }
 
     public static void tick() {

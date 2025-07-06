@@ -28,10 +28,10 @@ public class OptionsScreenMixin implements OptionsScreenAccessor {
         int y = marginY;
 
         dhToggleButton = ButtonWidget.builder(
-                Text.literal("DH: " + (Config.enabled ? "ON" : "OFF")),
+                Text.literal("DH: " + (Config.offhand ? "ON" : "OFF")),
                 button -> {
-                    Config.enabled = !Config.enabled;
-                    button.setMessage(Text.literal("DH: " + (Config.enabled ? "ON" : "OFF")));
+                    Config.offhand = !Config.offhand;
+                    button.setMessage(Text.literal("DH: " + (Config.offhand ? "ON" : "OFF")));
                     Config.save();
                 }
         ).dimensions(x, y, buttonWidth, buttonHeight).build();

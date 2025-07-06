@@ -1,52 +1,61 @@
 package wtf.blexyel.simple_camera_tweaks.util;
 
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.glfw.GLFW;
+import wtf.blexyel.simple_camera_tweaks.Config;
+import wtf.blexyel.simple_camera_tweaks.Main;
 
 public class Zoom {
-    private static final KeyBinding zoomKey = new KeyBinding("key.simple_camera_tweaks.zoom", GLFW.GLFW_KEY_C, "category.simple_camera_tweaks.main");
-    public static boolean isZoomin = false;
+    private static boolean wasZooming = false;
 
-    public static float zoomedFovDefault = 0.2F;
-    public static float zoomedFov = 0.2F;       // Zoomed-in FOV scale
-    public static float defaultFov = 1.0F;      // Normal FOV scale
+    public static final float DEFAULT_FOV_SCALE = 1.0F;
+    public static final float ZOOMED_FOV_SCALE_DEFAULT = 0.2F;
 
-    public static float currentZoomLevel = 1.0F;   // The target zoom level
-    public static float actualZoomLevel = 1.0F;    // The lerped FOV value
+    public static float targetZoomLevel = DEFAULT_FOV_SCALE;
+    public static float actualZoomLevel = DEFAULT_FOV_SCALE;
 
-    public static void initZoom() {
-        KeyBindingHelper.registerKeyBinding(zoomKey);
+    public static float zoomedFovScale = ZOOMED_FOV_SCALE_DEFAULT;
+    
+    public static boolean isZooming() {
+        return Keybindings.zoomKey.isPressed();
     }
 
-    public static boolean zoomin() {
-        return zoomKey.isPressed();
-    }
+    public static void updateZoomState() {
+        MinecraftClient client = MinecraftClient.getInstance();
 
-    public static void smoothCam() {
-        if (zoomin()) {
-            if (!isZoomin) {
-                isZoomin = true;
-                MinecraftClient.getInstance().options.smoothCameraEnabled = true;
+        if (isZooming()) {
+            if (!wasZooming) {
+                wasZooming = true;
+                client.options.smoothCameraEnabled = true;
             }
-
-            currentZoomLevel = zoomedFov;
+            targetZoomLevel = zoomedFovScale;
         } else {
-            if (isZoomin) {
-                isZoomin = false;
-                MinecraftClient.getInstance().options.smoothCameraEnabled = false;
+            if (wasZooming) {
+                wasZooming = false;
+                client.options.smoothCameraEnabled = false;
 
-                zoomedFov = zoomedFovDefault;
+                zoomedFovScale = ZOOMED_FOV_SCALE_DEFAULT;
             }
-            currentZoomLevel = defaultFov;
+
+            targetZoomLevel = DEFAULT_FOV_SCALE;
+
+            //Main.LOGGER.info("3 Target Zoom Level: " + Math.round(targetZoomLevel));
+            //Main.LOGGER.info("4 Actual Zoom Level: " + Math.round(actualZoomLevel));
+
+            // Replace with something better, that works properly with smooth zooming out. I hate this.
+            // Been fighting this shit for like 5 hours, i am fucking done
+            actualZoomLevel = client.options.getFov().getValue();
         }
     }
 
-
     public static void calculateZoom() {
-        // This should always run every tick
-        actualZoomLevel = MathHelper.lerp(0.1f, (float) actualZoomLevel, (float) currentZoomLevel);
+        if (Config.smooth) {
+            actualZoomLevel = MathHelper.lerp(0.25f, actualZoomLevel, targetZoomLevel);
+        } else {
+            actualZoomLevel = targetZoomLevel;
+        }
+
+        //Main.LOGGER.info("1 Target Zoom Level: " + Math.round(targetZoomLevel));
+        //Main.LOGGER.info("2 Actual Zoom Level: " + Math.round(actualZoomLevel));
     }
 }

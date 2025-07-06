@@ -24,7 +24,7 @@ public abstract class HandMixin {
         Arm offArm = mainHand ? abstractClientPlayer.getMainArm() : abstractClientPlayer.getMainArm().getOpposite();
         String heldItem = abstractClientPlayer.getMainHandStack().toString();
         //System.out.println("Held Item: " + heldItem.contains("pointblank:"));
-        if (itemStack.isEmpty() &&  !heldItem.contains("pointblank:") && (Config.enabled) && (!mainHand && !abstractClientPlayer.isInvisible())) {
+        if (itemStack.isEmpty() &&  !heldItem.contains("pointblank:") && (Config.offhand) && (!mainHand && !abstractClientPlayer.isInvisible())) {
             this.renderArmHoldingItem(poseStack, multiBufferSource, combinedLight, equippedProgress, swingProgress, offArm);
         }
     }
