@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Config {
-    public static boolean smooth = true;
+    public static boolean smooth = false;
     public static boolean offhand = false;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -51,6 +51,7 @@ public class Config {
             try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
                 GSON.toJson(json, writer);
             }
+            //Main.LOGGER.info("Config saved");
         } catch (IOException e) {
             e.printStackTrace();
         }
