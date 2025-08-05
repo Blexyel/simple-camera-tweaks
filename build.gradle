@@ -20,7 +20,8 @@ repositories {
 // Define the target Minecraft version from the mcversion property, default to gradle.properties minecraft_version
 ext {
     targetVersion = project.hasProperty('mcversion') ? project.mcversion : project.minecraft_version
-    versionPropertiesFile = "versions/${targetVersion}/gradle.properties"
+    //versionPropertiesFile = "versions/${targetVersion}/gradle.properties"
+    versionPropertiesFile = "gradle.properties"
 }
 
 // Set the archivesName to include the target version
@@ -76,7 +77,7 @@ processResources {
                 "min_minecraft_version": minVersion,
                 "loader_version": loaderVersion
     }
-
+    /*
     if (!project.hasProperty("mcversion")) {
         filter { line ->
             if (line.contains('"minecraft": ">=') && line.contains('<='))
@@ -84,6 +85,7 @@ processResources {
             return line
         }
     }
+    */
 }
 
 def targetJavaVersion = 17
