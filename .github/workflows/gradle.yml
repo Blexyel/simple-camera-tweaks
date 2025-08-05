@@ -2,9 +2,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "main", "1.21-1", "1.21.2-5" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "1.21-1", "1.21.2-5" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -15,10 +15,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 21
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '21'
+        java-version: '17'
         distribution: 'temurin'
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
@@ -30,12 +30,12 @@ jobs:
         gradle-version: '8.14'
         cache-disabled: true
     
-    # - name: Build with Gradle 8.14
-    #   run: gradle build
-
     - name: Build with Gradle 8.14
-      run: chmod +x build_all.sh && ./build_all.sh
-      shell: bash
+      run: gradle build
+
+    # - name: Build with Gradle 8.14
+    #   run: chmod +x build_all.sh && ./build_all.sh
+    #   shell: bash
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.6.2
