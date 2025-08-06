@@ -3,7 +3,8 @@ plugins {
     id 'maven-publish'
 }
 
-version = "${project.mod_version}_${project.hasProperty('mcversion') ? project.mcversion : (project.minecraft_version ?: '')}"
+//version = "${project.mod_version}_${project.hasProperty('mcversion') ? project.mcversion : (project.minecraft_version ?: '')}"
+version = "${project.mod_version}"
 group = project.maven_group
 
 repositories {
