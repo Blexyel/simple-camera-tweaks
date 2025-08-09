@@ -3,7 +3,8 @@ plugins {
     id 'maven-publish'
 }
 
-version = "${project.mod_version}_${project.hasProperty('mcversion') ? project.mcversion : (project.minecraft_version ?: '')}"
+//version = "${project.mod_version}_${project.hasProperty('mcversion') ? project.mcversion : (project.minecraft_version ?: '')}"
+version = project.mod_version
 group = project.maven_group
 
 repositories {
@@ -73,7 +74,7 @@ processResources {
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
-                "minecraft_version": targetVersion,
+                //"minecraft_version": targetVersion,
                 "min_minecraft_version": minVersion,
                 "loader_version": loaderVersion
     }
