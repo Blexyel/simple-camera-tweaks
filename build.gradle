@@ -1,6 +1,20 @@
 plugins {
     id 'fabric-loom' version '1.11-SNAPSHOT'
     id 'maven-publish'
+    id 'com.diffplug.spotless' version '7.2.1'
+}
+
+spotless {
+    java {
+        googleJavaFormat('1.28.0')  // specify the version of google-java-format
+		target 'src/**/*.java'       // files to format
+    }
+}
+
+tasks.register('fmt') {
+    group = 'formatting'
+    description = 'Formats the code using Spotless.'
+    dependsOn 'spotlessApply'
 }
 
 //version = "${project.mod_version}_${project.hasProperty('mcversion') ? project.mcversion : (project.minecraft_version ?: '')}"
@@ -29,6 +43,8 @@ ext {
 base {
     archivesName = "${project.archives_base_name}"
 }
+
+println "Building for Minecraft version: ${targetVersion}"
 
 // Load version-specific gradle.properties if it exists
 def versionProps = new Properties()

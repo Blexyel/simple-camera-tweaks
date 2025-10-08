@@ -13,34 +13,35 @@ import wtf.blexyel.simple_camera_tweaks.accessor.OptionsScreenAccessor;
 
 @Mixin(OptionsScreen.class)
 public class OptionsScreenMixin implements OptionsScreenAccessor {
-    @Unique
-    private ButtonWidget dhToggleButton;
+  @Unique private ButtonWidget dhToggleButton;
 
-    @Inject(method = "init", at = @At("TAIL"))
-    private void onInit(CallbackInfo ci) {
-        OptionsScreen screen = (OptionsScreen)(Object)this;
+  @Inject(method = "init", at = @At("TAIL"))
+  private void onInit(CallbackInfo ci) {
+    OptionsScreen screen = (OptionsScreen) (Object) this;
 
-        int buttonWidth = 40;
-        int buttonHeight = 20;
-        int marginX = (int)(screen.width * 0.03);
-        int marginY = (int)(screen.height * 0.03);
-        int x = screen.width - buttonWidth - marginX;
-        int y = marginY;
+    int buttonWidth = 40;
+    int buttonHeight = 20;
+    int marginX = (int) (screen.width * 0.03);
+    int marginY = (int) (screen.height * 0.03);
+    int x = screen.width - buttonWidth - marginX;
+    int y = marginY;
 
-        dhToggleButton = ButtonWidget.builder(
+    dhToggleButton =
+        ButtonWidget.builder(
                 Text.literal("DH: " + (Config.offhand ? "ON" : "OFF")),
                 button -> {
-                    Config.offhand = !Config.offhand;
-                    button.setMessage(Text.literal("DH: " + (Config.offhand ? "ON" : "OFF")));
-                    Config.save();
-                }
-        ).dimensions(x, y, buttonWidth, buttonHeight).build();
+                  Config.offhand = !Config.offhand;
+                  button.setMessage(Text.literal("DH: " + (Config.offhand ? "ON" : "OFF")));
+                  Config.save();
+                })
+            .dimensions(x, y, buttonWidth, buttonHeight)
+            .build();
 
-        ((ScreenAccessor) screen).invokeAddDrawableChild(dhToggleButton);
-    }
+    ((ScreenAccessor) screen).invokeAddDrawableChild(dhToggleButton);
+  }
 
-    @Override
-    public ButtonWidget simpleCameraTweaks$getDhToggleButton() {
-        return dhToggleButton;
-    }
+  @Override
+  public ButtonWidget simpleCameraTweaks$getDhToggleButton() {
+    return dhToggleButton;
+  }
 }

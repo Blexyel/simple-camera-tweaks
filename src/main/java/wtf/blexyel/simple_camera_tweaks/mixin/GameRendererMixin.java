@@ -2,7 +2,6 @@ package wtf.blexyel.simple_camera_tweaks.mixin;
 
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
-import net.fabricmc.loader.api.FabricLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,58 +12,70 @@ import wtf.blexyel.simple_camera_tweaks.util.Zoom;
 // I fucking hate this, holy shit
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    @Unique
-    private static final boolean IS_NEW_VERSION = FabricLoader.getInstance()
-            .getModContainer("minecraft")
-            .get()
-            .getMetadata()
-            .getVersion()
-            .getFriendlyString()
-            .compareTo("1.21.2") >= 0;
+  @SuppressWarnings({"unchecked"})
+  @Inject(method = "getFov", at = @At("TAIL"), cancellable = true)
+  private void onGetFov(
+      Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<?> cir) {
+    handleNewVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Float>) cir);
+  }
 
-    // I don't care about unchecked shit, do not remove cancellable
-    @SuppressWarnings({"unchecked"})
-    @Inject(method = "method_3196", at = @At("TAIL"), cancellable = true, remap = false)
-    private void onGetFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<?> cir) {
-        if (IS_NEW_VERSION) {
-            //noinspection unchecked
-            handleNewVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Float>) cir);
-        } else {
-            //noinspection unchecked
-            handleOldVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Double>) cir);
-        }
+  @Unique
+  private void handleNewVersion(
+      Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Float> cir) {
+    float baseFov = cir.getReturnValue();
+
+    Zoom.updateZoomState();
+
+    if (Zoom.isZooming()) {
+      Zoom.targetZoomLevel = (float) (baseFov * Zoom.zoomedFovScale);
+    } else {
+      Zoom.targetZoomLevel = baseFov;
     }
 
-    @Unique
-    private void handleNewVersion(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Float> cir) {
-        float baseFov = cir.getReturnValue();
+    Zoom.calculateZoom();
+    cir.setReturnValue(Zoom.actualZoomLevel);
+  }
+  /*
+      @SuppressWarnings("OptionalGetWithoutIsPresent")
+      @Unique
+      private static final boolean IS_NEW_VERSION = FabricLoader.getInstance()
+              .getModContainer("minecraft")
+              .get()
+              .getMetadata()
+              .getVersion()
+              .getFriendlyString()
+              .compareTo("1.21.2") >= 0;
 
-        Zoom.updateZoomState();
+      // I don't care about unchecked shit, do not remove cancellable
+      @SuppressWarnings({"unchecked"})
+      //@Inject(method = "method_3196", at = @At("TAIL"), cancellable = true, remap = false)
+      // switch back to above for prod
+      @Deprecated
+      @Inject(method = "getFov", at = @At("TAIL"), cancellable = true)
+      private void onGetFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<?> cir) {
+          if (IS_NEW_VERSION) {
+              //noinspection unchecked
+              handleNewVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Float>) cir);
+          } else {
+              //noinspection unchecked
+              //handleOldVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Double>) cir);
+          }
+      }
 
-        if (Zoom.isZooming()) {
-            Zoom.targetZoomLevel = (float) (baseFov * Zoom.zoomedFovScale);
-        } else {
-            Zoom.targetZoomLevel = baseFov;
-        }
+      @Unique
+      private void handleOldVersion(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
+          double baseFov = cir.getReturnValue();
 
-        Zoom.calculateZoom();
-        cir.setReturnValue(Zoom.actualZoomLevel);
-    }
+          Zoom.updateZoomState();
 
-    @Unique
-    private void handleOldVersion(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
-        double baseFov = cir.getReturnValue();
+          if (Zoom.isZooming()) {
+              Zoom.targetZoomLevel = (float) (baseFov * Zoom.zoomedFovScale);
+          } else {
+              Zoom.targetZoomLevel = (float) baseFov;
+          }
 
-        Zoom.updateZoomState();
-
-        if (Zoom.isZooming()) {
-            Zoom.targetZoomLevel = (float) (baseFov * Zoom.zoomedFovScale);
-        } else {
-            Zoom.targetZoomLevel = (float) baseFov;
-        }
-
-        Zoom.calculateZoom();
-        cir.setReturnValue((double) Zoom.actualZoomLevel);
-    }
+          Zoom.calculateZoom();
+          cir.setReturnValue((double) Zoom.actualZoomLevel);
+      }
+  */
 }

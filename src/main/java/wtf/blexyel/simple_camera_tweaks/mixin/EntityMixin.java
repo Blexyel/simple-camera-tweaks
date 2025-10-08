@@ -13,40 +13,40 @@ import wtf.blexyel.simple_camera_tweaks.util.FreelookUtils;
 
 @Mixin(Entity.class)
 public class EntityMixin implements Freelook {
-    @Unique private float cameraY;
-    @Unique private float cameraX;
+  @Unique private float cameraY;
+  @Unique private float cameraX;
 
-    @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
-    public void changeLookDirection(double cursorDeltaX, double cursorDeltaY, CallbackInfo ci) {
-        //noinspection ConstantConditions
-        if (!((Object) this instanceof ClientPlayerEntity)) return;
-        if (FreelookUtils.active()) {
-            float g = (float) cursorDeltaX * 0.15F;
-            float f = (float) cursorDeltaY * 0.15F;
+  @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
+  public void changeLookDirection(double cursorDeltaX, double cursorDeltaY, CallbackInfo ci) {
+    //noinspection ConstantConditions
+    if (!((Object) this instanceof ClientPlayerEntity)) return;
+    if (FreelookUtils.active()) {
+      float g = (float) cursorDeltaX * 0.15F;
+      float f = (float) cursorDeltaY * 0.15F;
 
-            this.cameraX += g;
-            this.cameraY = MathHelper.clamp(this.cameraY + f, -90F, 90F);
-            ci.cancel();
-        }
+      this.cameraX += g;
+      this.cameraY = MathHelper.clamp(this.cameraY + f, -90F, 90F);
+      ci.cancel();
     }
+  }
 
-    @Override
-    public float getCameraX() {
-        return this.cameraX;
-    }
+  @Override
+  public float getCameraX() {
+    return this.cameraX;
+  }
 
-    @Override
-    public float getCameraY() {
-        return this.cameraY;
-    }
+  @Override
+  public float getCameraY() {
+    return this.cameraY;
+  }
 
-    @Override
-    public void setCameraX(float x) {
-        this.cameraX = x;
-    }
+  @Override
+  public void setCameraX(float x) {
+    this.cameraX = x;
+  }
 
-    @Override
-    public void setCameraY(float y) {
-        this.cameraY = y;
-    }
+  @Override
+  public void setCameraY(float y) {
+    this.cameraY = y;
+  }
 }
