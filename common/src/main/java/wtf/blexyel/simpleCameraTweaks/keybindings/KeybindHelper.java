@@ -10,6 +10,16 @@ public class KeybindHelper {
   static boolean keybindingsLoaded = false;
 
   public static void load() {
+    ClientTickEvent.CLIENT_POST.register(
+        mc -> {
+          FreelookUtils.active = KeyBindingsCompat.FREELOOK_KEY.isDown();
+          if (KeyBindingsCompat.OFFHAND_KEY.isDown()) {
+            Config.offhand = !Config.offhand;
+            Config.save();
+          }
+          Zoom.isZoomin = KeyBindingsCompat.ZOOM_KEY.isDown();
+        });
+    /*
     try {
       // Try new Keybindings
       Class<?> keybindingsClass = Class.forName("wtf.blexyel.simpleCameraTweaks.keybindings.KeyBindings");
@@ -57,5 +67,6 @@ public class KeybindHelper {
         SimpleCameraTweaks.LOGGER.error("No compatible keybindings class could be loaded!", fallbackError);
       }
     }
+    */
   }
 }

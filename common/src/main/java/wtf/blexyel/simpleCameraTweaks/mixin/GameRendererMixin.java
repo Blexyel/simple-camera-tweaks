@@ -1,8 +1,7 @@
 package wtf.blexyel.simpleCameraTweaks.mixin;
 
-import java.lang.reflect.Method;
+import dev.architectury.platform.Platform;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,20 +17,15 @@ public class GameRendererMixin {
   @Inject(method = "getFov", at = @At("TAIL"), cancellable = true)
   private void onGetFov(
       Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<?> cir) {
-      handleNewVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Float>) cir);
+      if (!Platform.getMinecraftVersion().matches("^(1\\.21\\.1|1\\.21)$")) {
+        handleNewVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Float>) cir);
+      } else {
+        handleOldVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Double>) cir);
+      }
   }
 
   // remove later
 
-/*
-  @SuppressWarnings("unchecked")
-  // Don't remove, required for <=1.21.1
-  @Inject(method = "getFov", at = @At("TAIL"), cancellable = true)
-  private void onGetFovOld(
-      Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<?> cir) {
-      handleOldVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Double>) cir);
-  }
-*/
   @Unique
   private void handleNewVersion(
       Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Float> cir) {
@@ -48,7 +42,7 @@ public class GameRendererMixin {
 
     cir.setReturnValue(targetFov);
   }
-/*
+
   @Unique
   private void handleOldVersion(
       Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
@@ -65,5 +59,4 @@ public class GameRendererMixin {
 
     cir.setReturnValue((double) targetFov);
   }
- */
 }

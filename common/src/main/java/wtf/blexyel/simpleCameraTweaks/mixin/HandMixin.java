@@ -3,7 +3,7 @@ package wtf.blexyel.simpleCameraTweaks.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.InteractionHand;
@@ -19,7 +19,7 @@ public abstract class HandMixin {
   @Shadow
   private void renderPlayerArm(
       PoseStack poseStack,
-      SubmitNodeCollector queue,
+      MultiBufferSource queue,
       int combinedLight,
       float equippedProgress,
       float swingProgress,
@@ -42,7 +42,7 @@ public abstract class HandMixin {
       ItemStack itemStack,
       float equippedProgress,
       PoseStack poseStack,
-      SubmitNodeCollector queue,
+      MultiBufferSource queue,
       int combinedLight,
       CallbackInfo ci) {
     boolean mainHand = interactionHand == InteractionHand.MAIN_HAND;

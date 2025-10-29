@@ -30,6 +30,10 @@ repositories {
         url = 'https://maven.neoforged.net/releases'
     }
     maven { url 'https://maven.isxander.dev/releases' }
+    maven {
+        name = 'Kotlin for Forge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
+    }
 }
 
 dependencies {

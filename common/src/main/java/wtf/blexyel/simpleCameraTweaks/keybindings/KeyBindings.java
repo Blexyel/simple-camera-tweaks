@@ -1,4 +1,4 @@
-package wtf.blexyel.simpleCameraTweaks.keybindings;
+/*package wtf.blexyel.simpleCameraTweaks.keybindings;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
@@ -29,3 +29,4 @@ public class KeyBindings {
     KeyMappingRegistry.register(OFFHAND_KEY);
   }
 }
+*/
