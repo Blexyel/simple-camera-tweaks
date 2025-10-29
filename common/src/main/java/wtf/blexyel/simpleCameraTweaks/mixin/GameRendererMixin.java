@@ -1,6 +1,5 @@
 package wtf.blexyel.simpleCameraTweaks.mixin;
 
-import dev.architectury.platform.Platform;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
