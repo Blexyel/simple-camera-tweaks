@@ -5,7 +5,7 @@ license = "MIT"
 
 [[mods]]
 modId = "simple_camera_tweaks"
-version = "${version}"
+version = "${version}_neoforge"
 displayName = "simple-camera-tweaks"
 authors = "Blexyel"
 description = '''

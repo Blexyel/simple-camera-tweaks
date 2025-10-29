@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "simple_camera_tweaks",
-  "version": "${version}",
+  "version": "${version}_fabric",
   "name": "simple-camera-tweaks",
   "description": "simple camera tweaks ig.\n\nAdds freelook, zoom and double hands.",
   "authors": [
