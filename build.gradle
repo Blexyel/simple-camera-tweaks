@@ -1,13 +1,14 @@
 plugins {
-    id 'fabric-loom' version '1.11-SNAPSHOT'
-    id 'maven-publish'
+    id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
+    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
     id 'com.diffplug.spotless' version '7.2.1'
 }
 
 spotless {
     java {
         googleJavaFormat('1.28.0')  // specify the version of google-java-format
-		target 'src/**/*.java'       // files to format
+        target 'src/**/*.java'       // files to format
     }
 }
 
@@ -17,136 +18,69 @@ tasks.register('fmt') {
     dependsOn 'spotlessApply'
 }
 
-//version = "${project.mod_version}_${project.hasProperty('mcversion') ? project.mcversion : (project.minecraft_version ?: '')}"
-version = project.mod_version
-group = project.maven_group
+architectury {
+    minecraft = project.minecraft_version
+}
 
-repositories {
-    maven {
-        name 'Xander Maven'
-        url 'https://maven.isxander.dev/releases'
+allprojects {
+    group = rootProject.maven_group
+    version = rootProject.mod_version
+}
+
+subprojects {
+    apply plugin: 'dev.architectury.loom'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'maven-publish'
+
+    base {
+        // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
+        archivesName = "$rootProject.archives_name-$project.name"
     }
-    maven {
-        name = "Terraformers"
-        url = "https://maven.terraformersmc.com/"
-    }
-}
 
-// Define the target Minecraft version from the mcversion property, default to gradle.properties minecraft_version
-ext {
-    targetVersion = project.hasProperty('mcversion') ? project.mcversion : project.minecraft_version
-    //versionPropertiesFile = "versions/${targetVersion}/gradle.properties"
-    versionPropertiesFile = "gradle.properties"
-}
-
-// Set the archivesName to include the target version
-base {
-    archivesName = "${project.archives_base_name}"
-}
-
-println "Building for Minecraft version: ${targetVersion}"
-
-// Load version-specific gradle.properties if it exists
-def versionProps = new Properties()
-if (file(versionPropertiesFile).exists()) {
-    file(versionPropertiesFile).withInputStream { stream ->
-        versionProps.load(stream)
-    }
-    println "Loaded version-specific properties from ${versionPropertiesFile}"
-} else if (project.hasProperty('mcversion')) {
-    throw new GradleException("No gradle.properties found for Minecraft version ${targetVersion}. Ensure ${versionPropertiesFile} exists.")
-}
-
-// Fallback to root gradle.properties for missing properties
-def getProp = { key, defaultValue ->
-    versionProps.getProperty(key, project.hasProperty(key) ? project[key] : defaultValue)
-}
-
-// Define version-specific properties with fallbacks
-ext {
-    minVersion = getProp('min_minecraft_version', project.min_minecraft_version)
-    yarnMappings = getProp('yarn_mappings', project.yarn_mappings)
-    fabricVersion = getProp('fabric_version', project.fabric_version)
-    loaderVersion = getProp('loader_version', project.loader_version)
-    yacl_version = getProp('yacl_version', project.yacl_version)
-    modmenu_version = getProp('modmenu_version', project.modmenu_version)
-}
-
-// Update dependencies to use dynamic properties
-dependencies {
-    minecraft "com.mojang:minecraft:${targetVersion}"
-    mappings "net.fabricmc:yarn:${yarnMappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${loaderVersion}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabricVersion}"
-    modImplementation "dev.isxander:yet-another-config-lib:${yacl_version}"
-    modImplementation("com.terraformersmc:modmenu:${modmenu_version}")
-}
-
-processResources {
-    inputs.property "version", project.version
-    inputs.property "minecraft_version", targetVersion
-    inputs.property "loader_version", loaderVersion
-    filteringCharset "UTF-8"
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version,
-                //"minecraft_version": targetVersion,
-                "min_minecraft_version": minVersion,
-                "loader_version": loaderVersion
-    }
-    /*
-    if (!project.hasProperty("mcversion")) {
-        filter { line ->
-            if (line.contains('"minecraft": ">=') && line.contains('<='))
-                return line.replaceAll(/"minecraft":\s*">=.+<=.+"/, '"minecraft": "*"')
-            return line
-        }
-    }
-    */
-}
-
-def targetJavaVersion = 17
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release.set(targetJavaVersion)
-    }
-}
-
-java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
-    withSourcesJar()
-}
-
-jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
-    }
-}
-
-publishing {
-    publications {
-        create("mavenJava", MavenPublication) {
-            artifactId = project.archives_base_name
-            from components.java
-        }
-    }
     repositories {
-        // Add repositories to publish to here
-    }
-}
+        // Add repositories to retrieve artifacts from in here.
+        // You should only use this when depending on other mods because
+        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+        // for more information about repositories.
 
-// Validate mcversion (only require gradle.properties, java/resources are optional)
-tasks.named('build') {
-    doFirst {
-        if (project.hasProperty('mcversion') && !file(versionPropertiesFile).exists()) {
-            throw new GradleException("No gradle.properties found for Minecraft version ${targetVersion}. Ensure ${versionPropertiesFile} exists.")
+        mavenCentral()
+    }
+
+    dependencies {
+        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
+        mappings loom.officialMojangMappings()
+    }
+
+    java {
+        // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+        // if it is present.
+        // If you remove this line, sources will not be generated.
+        withSourcesJar()
+
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.release = 21
+    }
+
+    // Configure Maven publishing.
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = base.archivesName.get()
+                from components.java
+            }
         }
-        if (!project.hasProperty('mcversion')) {
-            println "Warning: No mcversion specified, using default minecraft_version: ${project.minecraft_version}"
+
+        // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+        repositories {
+            // Add repositories to publish to here.
+            // Notice: This block does NOT have the same function as the block in the top level.
+            // The repositories here will be used for publishing your artifact, not for
+            // retrieving dependencies.
         }
     }
 }
