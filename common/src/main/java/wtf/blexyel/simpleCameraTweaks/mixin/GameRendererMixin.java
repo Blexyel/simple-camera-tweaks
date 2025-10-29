@@ -14,17 +14,18 @@ import wtf.blexyel.simpleCameraTweaks.util.Zoom;
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
   @SuppressWarnings("unchecked")
-  @Inject(method = "getFov", at = @At("TAIL"), cancellable = true)
+  @Inject(method = "getFov(Lnet/minecraft/client/Camera;FZ)F", at = @At("TAIL"), cancellable = true, require = 0)
   private void onGetFov(
       Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<?> cir) {
-      if (!Platform.getMinecraftVersion().matches("^(1\\.21\\.1|1\\.21)$")) {
         handleNewVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Float>) cir);
-      } else {
-        handleOldVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Double>) cir);
-      }
   }
 
-  // remove later
+  @SuppressWarnings("unchecked")
+  @Inject(method = "getFov(Lnet/minecraft/client/Camera;FZ)D", at = @At("TAIL"), cancellable = true, require = 0)
+  private void onGetFovOld(
+      Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<?> cir) {
+      handleOldVersion(camera, tickDelta, changingFov, (CallbackInfoReturnable<Double>) cir);
+  }
 
   @Unique
   private void handleNewVersion(
