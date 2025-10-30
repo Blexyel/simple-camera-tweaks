@@ -10,6 +10,8 @@ public class KeybindHelper {
   static boolean keybindingsLoaded = false;
 
   public static void load() {
+    KeyBindingsCompat.init();
+
     ClientTickEvent.CLIENT_POST.register(
         mc -> {
           FreelookUtils.active = KeyBindingsCompat.FREELOOK_KEY.isDown();
