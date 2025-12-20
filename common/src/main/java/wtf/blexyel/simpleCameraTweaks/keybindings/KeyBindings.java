@@ -4,11 +4,11 @@ import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.KeyMapping.Category;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyBindings {
-  public static Category CATEGORY = KeyMapping.Category.register(ResourceLocation.parse("simple_camera_tweaks.main"));
+  public static Category CATEGORY = KeyMapping.Category.register(Identifier.parse("simple_camera_tweaks.main"));
 
   public static final KeyMapping FREELOOK_KEY = new KeyMapping("key.simple_camera_tweaks.freelook",
       InputConstants.Type.MOUSE,

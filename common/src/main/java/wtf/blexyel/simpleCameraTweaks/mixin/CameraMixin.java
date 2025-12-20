@@ -29,7 +29,7 @@ public abstract class CameraMixin {
           shift = At.Shift.BEFORE))
   // @Inject(method = "update", at = @At("TAIL"))
   public void setup(
-      net.minecraft.world.level.BlockGetter area,
+      net.minecraft.world.level.Level level,
       Entity focusedEntity,
       boolean thirdPerson,
       boolean inverseView,
