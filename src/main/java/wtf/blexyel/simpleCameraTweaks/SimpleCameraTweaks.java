@@ -24,7 +24,7 @@ public final class SimpleCameraTweaks implements ModInitializer {
           FreelookUtils.tick();
 
           FreelookUtils.active = KeyBindings.FREELOOK_KEY.isDown();
-          if (KeyBindings.OFFHAND_KEY.isDown()) {
+          if (KeyBindings.OFFHAND_KEY.consumeClick()) {
             Config.offhand = !Config.offhand;
             Config.save();
           }
