@@ -1,3 +1,6 @@
+run/
+.gradle/
+
 # User-specific stuff
 .idea/
 
