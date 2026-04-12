@@ -8,7 +8,3 @@ pluginManagement {
 }
 
 rootProject.name = 'simple_camera_tweaks'
-
-include 'common'
-include 'fabric'
-include 'neoforge'

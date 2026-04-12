@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "wtf.blexyel.simpleCameraTweaks.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "minVersion": "0.8",
+  "client": [
+    "CameraMixin",
+    "HandMixin",
+    "MouseHandlerMixin"
+  ],
+  "mixins": [
+    "EntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
