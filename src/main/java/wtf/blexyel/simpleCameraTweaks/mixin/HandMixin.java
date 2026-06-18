@@ -26,7 +26,7 @@ public abstract class HandMixin {
       HumanoidArm arm) {}
 
   @Inject(
-      method = "renderArmWithItem",
+      method = "submitArmWithItem",
       at =
           @At(
               value = "INVOKE",
@@ -34,8 +34,8 @@ public abstract class HandMixin {
               shift = At.Shift.AFTER))
   private void renderArmWithItem(
       AbstractClientPlayer player,
-      float f,
-      float g,
+      float frameInterp,
+      float xRot,
       InteractionHand hand,
       float attack,
       ItemStack itemStack,
