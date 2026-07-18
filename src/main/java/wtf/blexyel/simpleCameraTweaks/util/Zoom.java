@@ -2,7 +2,6 @@ package wtf.blexyel.simpleCameraTweaks.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
-import wtf.blexyel.simpleCameraTweaks.SimpleCameraTweaks;
 import wtf.blexyel.simpleCameraTweaks.config.Config;
 
 public class Zoom {
@@ -44,6 +43,9 @@ public class Zoom {
       targetZoomLevel = DEFAULT_FOV_SCALE;
     }
 
-    actualZoomLevel = Config.smooth ? Mth.lerp(zoomSpeed, actualZoomLevel, targetZoomLevel) : client.options.fov().get();
+    actualZoomLevel =
+        Config.smooth
+            ? Mth.lerp(zoomSpeed, actualZoomLevel, targetZoomLevel)
+            : client.options.fov().get();
   }
 }
