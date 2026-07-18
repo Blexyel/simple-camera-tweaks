@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import wtf.blexyel.simpleCameraTweaks.SimpleCameraTweaks;
 import wtf.blexyel.simpleCameraTweaks.util.Freelook;
 import wtf.blexyel.simpleCameraTweaks.util.FreelookUtils;
 import wtf.blexyel.simpleCameraTweaks.util.Zoom;
@@ -26,6 +27,7 @@ public abstract class CameraMixin {
   @Final @Shadow private Minecraft minecraft;
 
   @Unique private boolean startFreelook = true;
+  @Unique private float lastFov;
 
   @Inject(method = "calculateFov", at = @At("TAIL"), cancellable = true)
   private void calculateFov(float partialTicks, CallbackInfoReturnable<Float> cir) {
@@ -34,10 +36,10 @@ public abstract class CameraMixin {
 
     Zoom.updateZoomState();
 
-    float targetFov =
-        Zoom.isZoomin ? Mth.clamp(baseFov * Zoom.zoomedFovScale, 1.0F, 110.0F) : baseFov;
+    //float targetFov = Zoom.isZoomin ? Mth.clamp(baseFov * Zoom.zoomedFovScale, 1.0F, 110.0F) : baseFov;
+    float targetFov = Mth.clamp(baseFov * Zoom.actualZoomLevel, 1.0F, 110.0F);
 
-    Zoom.actualZoomLevel = Zoom.targetZoomLevel;
+    //Zoom.actualZoomLevel = Zoom.targetZoomLevel;
 
     cir.setReturnValue(targetFov);
   }
