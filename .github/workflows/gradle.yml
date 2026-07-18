@@ -28,16 +28,9 @@ jobs:
       - name: build
         run: ./gradlew build
 
-      - name: capture fabric build artifacts
+      - name: capture build artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Fabric-Artifacts
-          path: fabric/build/libs/
-
-      - name: capture neoforge build artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Neoforge-Artifacts
-          path: neoforge/build/libs/
+          name: Artifacts
+          path: build/libs/
