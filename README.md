@@ -6,4 +6,6 @@
 </a>
 
 <br>
-I will try to update this mod as quickly as possible to the latest version, but no guarantees. Latest snapshot update is not possible right now, due to dependencies, that aren't updated yet. 
+I will try to update this mod as quickly as possible to the latest version, but no guarantees.
+
+I will not update to any snapshot. If there is an update for a snapshot, it is because i got bored, but do not expect snapshot updates, EVER!!

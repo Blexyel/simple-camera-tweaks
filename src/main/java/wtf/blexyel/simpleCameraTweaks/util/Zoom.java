@@ -3,6 +3,7 @@ package wtf.blexyel.simpleCameraTweaks.util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import wtf.blexyel.simpleCameraTweaks.SimpleCameraTweaks;
+import wtf.blexyel.simpleCameraTweaks.config.Config;
 
 public class Zoom {
   private static boolean wasZooming = false;
@@ -25,24 +26,24 @@ public class Zoom {
     if (isZoomin) {
       if (!wasZooming) {
         wasZooming = true;
-        client.options.smoothCamera = true;
       }
+      client.options.smoothCamera = true;
       targetZoomLevel = zoomedFovScale;
     } else {
       if (wasZooming) {
-        client.options.smoothCamera = false;
         zoomedFovScale = ZOOMED_FOV_SCALE_DEFAULT;
-        actualZoomLevel = Mth.lerp(zoomSpeed, actualZoomLevel, DEFAULT_FOV_SCALE);
-        if (Math.abs(actualZoomLevel -1) < 0.01F) {
-          actualZoomLevel = DEFAULT_FOV_SCALE;
-          wasZooming = false;
+        if (Config.smooth) {
+          actualZoomLevel = Mth.lerp(zoomSpeed / 8, actualZoomLevel, DEFAULT_FOV_SCALE);
+          if (Math.abs(actualZoomLevel - 1) < 0.01F) {
+            actualZoomLevel = DEFAULT_FOV_SCALE;
+            wasZooming = false;
+          }
         }
       }
+      client.options.smoothCamera = false;
       targetZoomLevel = DEFAULT_FOV_SCALE;
-
-      //actualZoomLevel = client.options.fov().get();
     }
 
-    actualZoomLevel = Mth.lerp(zoomSpeed, actualZoomLevel, targetZoomLevel);
+    actualZoomLevel = Config.smooth ? Mth.lerp(zoomSpeed, actualZoomLevel, targetZoomLevel) : client.options.fov().get();
   }
 }

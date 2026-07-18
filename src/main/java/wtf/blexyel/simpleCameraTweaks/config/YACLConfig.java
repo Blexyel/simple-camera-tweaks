@@ -28,15 +28,15 @@ public class YACLConfig {
                         .build())
                 .option(
                     Option.<Boolean>createBuilder()
-                        .name(Component.literal("Smooth zoom (Not implemented)"))
+                        .name(Component.literal("Smooth zoom (now implemented)"))
                         .description(
                             OptionDescription.of(
                                 Component.literal(
-                                    "Smoothly zooms in and out (Not implemented, due to the lack of my math skills)")))
+                                    "Smoothly zooms in and out (used to not be implemented, due to the lack of my math skills, which miraculously disappeared)")))
                         .binding(
                             Config.smooth, () -> Config.smooth, newVal -> Config.smooth = newVal)
                         .controller(TickBoxControllerBuilder::create)
-                        .available(false)
+                        .available(true)
                         .build())
                 .build())
         .save(Config::save)

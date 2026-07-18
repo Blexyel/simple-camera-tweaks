@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import wtf.blexyel.simpleCameraTweaks.SimpleCameraTweaks;
+import wtf.blexyel.simpleCameraTweaks.config.Config;
 import wtf.blexyel.simpleCameraTweaks.util.Freelook;
 import wtf.blexyel.simpleCameraTweaks.util.FreelookUtils;
 import wtf.blexyel.simpleCameraTweaks.util.Zoom;
@@ -37,7 +38,9 @@ public abstract class CameraMixin {
     Zoom.updateZoomState();
 
     //float targetFov = Zoom.isZoomin ? Mth.clamp(baseFov * Zoom.zoomedFovScale, 1.0F, 110.0F) : baseFov;
-    float targetFov = Mth.clamp(baseFov * Zoom.actualZoomLevel, 1.0F, 110.0F);
+    float targetFov = Config.smooth ? Mth.clamp(baseFov * Zoom.actualZoomLevel, 1.0F, 110.0F) : (
+          Zoom.isZoomin ? Mth.clamp(baseFov * Zoom.zoomedFovScale, 1.0F, 110.0F) : baseFov
+        );
 
     //Zoom.actualZoomLevel = Zoom.targetZoomLevel;
 
