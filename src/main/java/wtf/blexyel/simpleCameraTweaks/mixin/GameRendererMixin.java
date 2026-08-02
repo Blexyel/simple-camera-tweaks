@@ -43,7 +43,7 @@ public class GameRendererMixin {
 
     float baseFov = cir.getReturnValue();
 
-    Zoom.updateZoomState();
+    // Zoom.updateZoomState();
 
     float targetFov =
         Zoom.isZoomin ? Mth.clamp(baseFov * Zoom.zoomedFovScale, 1.0F, 110.0F) : baseFov;

@@ -10,6 +10,7 @@ import wtf.blexyel.simpleCameraTweaks.SimpleCameraTweaks;
 public class Config {
   public static boolean smooth = false;
   public static boolean offhand = false;
+  public static float zoomSpeed = 0.5F;
 
   private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
   private static final File CONFIG_FILE = new File("config/simple_camera_tweaks.json");
@@ -35,6 +36,10 @@ public class Config {
         smooth = json.get("smooth").getAsBoolean();
       }
 
+      if (json.has("zoomSpeed")) {
+        zoomSpeed = json.get("zoomSpeed").getAsFloat();
+      }
+
     } catch (IOException | JsonParseException e) {
       e.printStackTrace();
     }
@@ -47,6 +52,7 @@ public class Config {
       JsonObject json = new JsonObject();
       json.addProperty("smooth", smooth);
       json.addProperty("offhand", offhand);
+      json.addProperty("zoomSpeed", zoomSpeed);
 
       try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
         GSON.toJson(json, writer);

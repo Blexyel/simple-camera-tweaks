@@ -2,6 +2,7 @@ package wtf.blexyel.simpleCameraTweaks.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
+import wtf.blexyel.simpleCameraTweaks.SimpleCameraTweaks;
 import wtf.blexyel.simpleCameraTweaks.config.Config;
 
 public class Zoom {
@@ -15,12 +16,17 @@ public class Zoom {
 
   public static float zoomedFovScale = 0.3F;
 
-  public static float zoomSpeed = 0.1F;
+  public static float zoomSpeed = 0.5F;
 
   public static boolean isZoomin = false;
 
   public static void updateZoomState() {
     Minecraft client = Minecraft.getInstance();
+
+    float baseZoomSpeed = Config.zoomSpeed;
+    float deltaTime = client.getDeltaTracker().getRealtimeDeltaTicks();
+    zoomSpeed = Mth.clamp(baseZoomSpeed * deltaTime, 0.0F, 1.0F);
+    SimpleCameraTweaks.LOGGER.info("{}", zoomSpeed);
 
     if (isZoomin) {
       if (!wasZooming) {
