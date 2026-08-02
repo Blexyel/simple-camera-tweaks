@@ -26,7 +26,6 @@ public class Zoom {
     float baseZoomSpeed = Config.zoomSpeed;
     float deltaTime = client.getDeltaTracker().getRealtimeDeltaTicks();
     zoomSpeed = Mth.clamp(baseZoomSpeed * deltaTime, 0.0F, 1.0F);
-    SimpleCameraTweaks.LOGGER.info("{}", zoomSpeed);
 
     if (isZoomin) {
       if (!wasZooming) {
