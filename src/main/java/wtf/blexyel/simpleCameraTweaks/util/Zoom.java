@@ -2,7 +2,6 @@ package wtf.blexyel.simpleCameraTweaks.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
-import wtf.blexyel.simpleCameraTweaks.SimpleCameraTweaks;
 import wtf.blexyel.simpleCameraTweaks.config.Config;
 
 public class Zoom {
